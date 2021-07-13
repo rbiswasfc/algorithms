@@ -192,3 +192,27 @@ class TargetSumWaysBrute:
         # print(leaf_vals)
         ans = sum([val == target for val in leaf_vals])
         return ans
+
+
+class TargetSumWaysDP:
+    def findTargetSumWays(self, nums: List[int], target: int) -> int:
+        nums = [abs(num) for num in nums]
+        shift = sum(nums)
+        n, m = len(nums), 2 * shift + 1
+
+        if abs(target) > shift:
+            return 0
+
+        lookup = [[0] * m for i in range(n)]
+        lookup[0][nums[0] + shift] = 1
+        lookup[0][-nums[0] + shift] += 1
+
+        for i in range(1, n):
+            for j in range(m):
+                if j - nums[i] >= 0:
+                    lookup[i][j] += lookup[i - 1][j - nums[i]]
+                if j + nums[i] < m:
+                    lookup[i][j] += lookup[i - 1][j + nums[i]]
+
+        return lookup[n - 1][target + shift]
+

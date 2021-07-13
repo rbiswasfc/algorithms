@@ -97,3 +97,24 @@ class MaxProfit:
             else:
                 prev_min = price
         return max_profit
+
+
+class MaxProfitII:
+    def maxProfit(self, prices: List[int]) -> int:
+        eligible = True
+        total_profit = 0
+        cur_buy = None
+        prices.append(prices[-1])
+
+        for i, price in enumerate(prices[:-1]):
+            if prices[i + 1] > price:
+                if eligible:
+                    cur_buy = price
+                    eligible = False
+            else:
+                if isinstance(cur_buy, int):
+                    profit = price - cur_buy
+                    total_profit += profit
+                    eligible = True
+                    cur_buy = None
+        return total_profit

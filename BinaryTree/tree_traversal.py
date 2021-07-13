@@ -48,6 +48,27 @@ class InorderTraversal:
         return result
 
 
+class InorderTraversalStack:
+    def inorder_traversal(self, root: TreeNode) -> List[int]:
+        if not root:
+            return
+        stack = []
+        current = root
+        result = []
+
+        while True:
+            if current is not None:
+                stack.append(current)
+                current = current.left
+            elif stack:
+                n = stack.pop()
+                result.append(n.val)
+                current = n.right
+            else:
+                break
+        return result
+
+
 class PostorderTraversal:
     def postorder_traversal(self, root: TreeNode) -> List[int]:
         if not root:
