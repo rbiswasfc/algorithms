@@ -114,3 +114,84 @@ class SumSquares:
             queue = new_queue
 
         return level
+
+
+#### Q using two stacks
+class MyStack:
+    def __init__(self):
+        self.data = []
+
+    def __len__(self):
+        return len(self.data)
+
+    def empty(self):
+        return len(self) == 0
+
+    def push(self, x):
+        self.data.append(x)
+
+    def pop(self):
+        if self.empty():
+            return
+        return self.data.pop()
+
+    def peak(self):
+        if self.empty():
+            return
+        return self.data[-1]
+
+
+class MyQueue:
+    def __init__(self):
+        """
+        Initialize your data structure here.
+        """
+        self.s1 = MyStack()
+        self.s2 = MyStack()
+
+    def push(self, x: int) -> None:
+        """
+        Push element x to the back of queue.
+        """
+        self.s1.push(x)
+
+    def pop(self) -> int:
+        """
+        Removes the element from in front of queue and returns that element.
+        """
+        if self.s2.empty():
+            if self.s1.empty():
+                return
+            else:
+                # data transfer
+                while not self.s1.empty():
+                    e = self.s1.pop()
+                    self.s2.push(e)
+                return self.s2.pop()
+        else:
+            return self.s2.pop()
+
+    def peek(self) -> int:
+        """
+        Get the front element.
+        """
+        if self.s2.empty():
+            if self.s1.empty():
+                return
+            else:
+                while not self.s1.empty():
+                    e = self.s1.pop()
+                    self.s2.push(e)
+                return self.s2.peak()
+        else:
+            return self.s2.peak()
+
+    def empty(self) -> bool:
+        """
+        Returns whether the queue is empty.
+        """
+        return self.s1.empty() & self.s2.empty()
+
+    def __str__(self):
+        rep = "s1: {!r}\ns2:{!r}".format(self.s1.data, self.s2.data)
+        return rep
