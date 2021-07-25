@@ -120,15 +120,15 @@ class DuplicateZeros:
 # Overall
 weights = np.ones((len(x_train),))
 
-# Subgroup
+# Presence of identity
 weights += (train[identity].fillna(0).values >= 0.5).sum(axis=1).astype(int)
 
-# Background Positive, Subgroup Negative
+# Positive examples without identity
 cond_a = train["target"].values >= 0.5
 cond_b = (train[identity].fillna(0).values < 0.5).sum(axis=1) == 0
 weights += (cond_a & cond_b).astype(int)
 
-# Background Negative, Subgroup Positive
+# Negative examples with identity
 cond_a = train["target"].values < 0.5
 cond_b = (train[identity].fillna(0).values >= 0.5).sum(axis=1) >= 1
 weights += (cond_a & cond_b).astype(int)
