@@ -127,6 +127,7 @@ weights += (train[identity].fillna(0).values >= 0.5).sum(axis=1).astype(int)
 cond_a = train["target"].values >= 0.5
 cond_b = (train[identity].fillna(0).values < 0.5).sum(axis=1) == 0
 weights += (cond_a & cond_b).astype(int)
+
 # Background Negative, Subgroup Positive
 cond_a = train["target"].values < 0.5
 cond_b = (train[identity].fillna(0).values < 0.5).sum(axis=1) >= 1
