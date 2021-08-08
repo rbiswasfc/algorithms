@@ -116,21 +116,3 @@ class DuplicateZeros:
                 queue.append(elem)
             arr[i] = queue.pop(0)
 
-
-# Overall
-weights = np.ones((len(x_train),))
-
-# Presence of identity
-weights += (train[identity].fillna(0).values >= 0.5).sum(axis=1).astype(int)
-
-# Positive examples without identity
-cond_a = train["target"].values >= 0.5
-cond_b = (train[identity].fillna(0).values < 0.5).sum(axis=1) == 0
-weights += (cond_a & cond_b).astype(int)
-
-# Negative examples with identity
-cond_a = train["target"].values < 0.5
-cond_b = (train[identity].fillna(0).values >= 0.5).sum(axis=1) >= 1
-weights += (cond_a & cond_b).astype(int)
-
-loss_weight = 1.0 / weights.mean()
